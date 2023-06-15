@@ -1,14 +1,20 @@
 package com.example.tourmate.home;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.tourmate.databinding.ItemDestinationBinding;
 import com.example.tourmate.model.Destination;
 
@@ -18,7 +24,7 @@ import java.util.List;
 public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.DestinationViewHolder> {
 
     private final Context context;
-    private final List<Destination> destinationList;
+    private List<Destination> destinationList;
 
     public DestinationAdapter(Context context, List<Destination> destinationList) {
         this.context = context;
@@ -52,6 +58,19 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
         public void bind(Destination destination) {
             binding.tvItemTitle.setText(destination.getName());
             binding.tvItemDesc.setText(destination.getDescription());
+            Glide.with(context)
+                    .load(destination.getImage())
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            binding.itemLayout.setBackground(resource);
+                        }
+
+                        @Override
+                        public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                            Log.d("Error load image", errorDrawable.toString());
+                        }
+                    });
 
             binding.itemLayout.setOnClickListener(v -> {
                 Toast.makeText(context, "TES : "+destination.getName(), Toast.LENGTH_SHORT).show();
