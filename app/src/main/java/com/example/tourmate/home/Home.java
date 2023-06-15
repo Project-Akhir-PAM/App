@@ -1,5 +1,6 @@
 package com.example.tourmate.home;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -9,7 +10,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.example.tourmate.R;
 import com.example.tourmate.api.ApiConfig;
 import com.example.tourmate.databinding.ActivityHomeBinding;
 import com.example.tourmate.model.Destination;
@@ -36,6 +39,13 @@ public class Home extends AppCompatActivity implements TextWatcher {
         setContentView(binding.getRoot());
 
         this.destinationList = new ArrayList<>();
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setCustomView(R.layout.action_bar_custom);
+            TextView tvTitle = findViewById(R.id.tvTitle);
+            tvTitle.setText("Home");
+        }
 
         getAllData();
 
