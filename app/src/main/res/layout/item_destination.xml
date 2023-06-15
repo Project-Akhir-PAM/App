@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    app:cardCornerRadius="16dp"
+    android:layout_marginBottom="30dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/img_bromo">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:alpha="0.5">
+        </View>
+
+        <TextView
+            android:id="@+id/tvItemTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title Destination"
+            android:layout_marginTop="17dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvItemDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/white"
+            android:maxLines="2"
+            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
+            app:layout_constraintEnd_toEndOf="@+id/tvItemTitle"
+            app:layout_constraintStart_toStartOf="@+id/tvItemTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvItemTitle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
