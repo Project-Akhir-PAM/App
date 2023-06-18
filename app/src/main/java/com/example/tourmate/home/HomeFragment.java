@@ -1,20 +1,24 @@
 package com.example.tourmate.home;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.tourmate.R;
 import com.example.tourmate.api.ApiConfig;
-import com.example.tourmate.databinding.ActivityHomeBinding;
+import com.example.tourmate.databinding.FragmentHomeBinding;
+import com.example.tourmate.home.DestinationAdapter;
 import com.example.tourmate.model.Destination;
 import com.example.tourmate.response.DestinationResponse;
 
@@ -25,35 +29,40 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Home extends AppCompatActivity implements TextWatcher {
+public class HomeFragment extends Fragment implements TextWatcher {
 
-    private ActivityHomeBinding binding;
+    private FragmentHomeBinding binding;
     private DestinationAdapter destinationAdapter;
     private List<Destination> destinationList;
+    private View view;
+
+    public HomeFragment() {
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
 
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        view = binding.getRoot();
 
         this.destinationList = new ArrayList<>();
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            getSupportActionBar().setCustomView(R.layout.action_bar_custom);
-            TextView tvTitle = findViewById(R.id.tvTitle);
+        if (((AppCompatActivity)getActivity()).getSupportActionBar() != null) {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setCustomView(R.layout.action_bar_custom);
+            TextView tvTitle = getActivity().findViewById(R.id.tvTitle);
             tvTitle.setText("Home");
         }
 
         getAllData();
 
-        this.destinationAdapter = new DestinationAdapter(this, destinationList);
+        this.destinationAdapter = new DestinationAdapter(view.getContext(), destinationList);
         binding.rvDestination.setAdapter(this.destinationAdapter);
-        binding.rvDestination.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvDestination.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         binding.etSearch.addTextChangedListener(this);
+
+        return this.view;
     }
 
     private void getAllData() {
@@ -65,7 +74,7 @@ public class Home extends AppCompatActivity implements TextWatcher {
                 if (response.isSuccessful()) {
                     destinationList = response.body().getData();
 
-                    destinationAdapter = new DestinationAdapter(Home.this, destinationList);
+                    destinationAdapter = new DestinationAdapter(view.getContext(), destinationList);
                     binding.rvDestination.setAdapter(destinationAdapter);
                 } else {
                     if (response.body() != null) {
@@ -89,7 +98,7 @@ public class Home extends AppCompatActivity implements TextWatcher {
                 destinationList.clear();
                 if (response.isSuccessful()) {
                     destinationList = response.body().getData();
-                    destinationAdapter = new DestinationAdapter(Home.this, destinationList);
+                    destinationAdapter = new DestinationAdapter(view.getContext(), destinationList);
                     binding.rvDestination.setAdapter(destinationAdapter);
                 }
             }
