@@ -14,7 +14,7 @@
     <item
         android:id="@+id/favorite"
         android:icon="@drawable/add"
-        android:title="Create" />
+        android:title="Post" />
 
     <item
         android:id="@+id/profile"

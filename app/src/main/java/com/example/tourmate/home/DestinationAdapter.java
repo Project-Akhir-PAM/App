@@ -1,12 +1,11 @@
 package com.example.tourmate.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +17,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.tourmate.databinding.ItemDestinationBinding;
 import com.example.tourmate.model.Destination;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.DestinationViewHolder> {
@@ -73,7 +71,10 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
                     });
 
             binding.itemLayout.setOnClickListener(v -> {
-                Toast.makeText(context, "TES : "+destination.getName(), Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(context, DetailDestinationActivity.class);
+
+                i.putExtra("get_destination", destination);
+                context.startActivity(i);
             });
         }
     }

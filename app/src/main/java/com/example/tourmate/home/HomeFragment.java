@@ -42,7 +42,6 @@ public class HomeFragment extends Fragment implements TextWatcher {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-
         view = binding.getRoot();
 
         this.destinationList = new ArrayList<>();

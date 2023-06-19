@@ -26,6 +26,9 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
+            android:name=".home.DetailDestinationActivity"
+            android:exported="false" />
+        <activity
             android:name=".auth.SplashScreen"
             android:exported="true">
             <intent-filter>
