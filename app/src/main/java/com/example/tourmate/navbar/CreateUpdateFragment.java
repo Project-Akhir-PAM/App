@@ -33,6 +33,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.tourmate.R;
 import com.example.tourmate.api.ApiConfig;
 import com.example.tourmate.databinding.FragmentCreateUpdateBinding;
+import com.example.tourmate.response.CUDDestinationResponse;
 import com.example.tourmate.response.DestinationResponse;
 
 import java.io.File;
@@ -159,10 +160,10 @@ public class CreateUpdateFragment extends Fragment {
         RequestBody descRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), desc);
         RequestBody catIdRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(category));
 
-        Call<DestinationResponse> client = ApiConfig.getApiService().createDestination(nameRequestBody, locRequestBody, descRequestBody, catIdRequestBody);
-        client.enqueue(new Callback<DestinationResponse>() {
+        Call<CUDDestinationResponse> client = ApiConfig.getApiService().createDestination(nameRequestBody, locRequestBody, descRequestBody, catIdRequestBody);
+        client.enqueue(new Callback<CUDDestinationResponse>() {
             @Override
-            public void onResponse(Call<DestinationResponse> call, Response<DestinationResponse> response) {
+            public void onResponse(Call<CUDDestinationResponse> call, Response<CUDDestinationResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getStatus().equalsIgnoreCase("success")) {
                         Toast.makeText(view.getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -171,7 +172,7 @@ public class CreateUpdateFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<DestinationResponse> call, Throwable t) {
+            public void onFailure(Call<CUDDestinationResponse> call, Throwable t) {
                 Log.e("Error Retrofit", "onFailure: " + t.getMessage());
             }
         });
