@@ -7,17 +7,12 @@
     android:background="#FFFFFF"
     tools:context=".profile.profileFragmrnt">
 
-    <!-- TODO: Update blank fragment layout -->
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
     <View
         android:id="@+id/view"
         android:layout_width="wrap_content"
         android:layout_height="130dp"
         android:background="#EFEFEF"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
 
     <ImageView
@@ -121,19 +116,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tvGender"
         tools:text="birthdate"
         android:textAlignment="textStart" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MY Profile"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

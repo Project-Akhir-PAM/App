@@ -45,7 +45,7 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(v -> {
             if (email.getText().length() > 0 && password.getText().length() > 0) {
                 login(email.getText().toString(), password.getText().toString());
-                startActivity(new Intent(getApplicationContext(), HomeFragment.class));
+                startActivity(new Intent(getApplicationContext(), NavbarActivity.class));
             } else {
                 Toast.makeText(getApplicationContext(), "Data harus diisi", Toast.LENGTH_SHORT).show();
             }
