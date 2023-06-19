@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.tourmate.R;
 
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link profileFragment#newInstance} factory method to
@@ -61,6 +62,6 @@ public class profileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate( R.layout.fragment_profile, container, false );
+        return inflater.inflate(R.layout.fragment_profile, container, false );
     }
 }
