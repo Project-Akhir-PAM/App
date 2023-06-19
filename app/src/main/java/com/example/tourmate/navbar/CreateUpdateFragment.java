@@ -54,7 +54,7 @@ public class CreateUpdateFragment extends Fragment {
     private FragmentCreateUpdateBinding binding;
     private String[] items = {"", "Nature", "Museum", "Amusement Park", "Park"};
     private View view;
-    private File imageFile;
+//    private File imageFile;
 
     public CreateUpdateFragment() {
         // Required empty public constructor
@@ -76,18 +76,21 @@ public class CreateUpdateFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, items);
         binding.spCategory.setAdapter(adapter);
 
-        binding.ibAddImage.setOnClickListener(v -> {
-            if (ActivityCompat.checkSelfPermission(view.getContext(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, 10);
-            } else {
-                ActivityCompat.requestPermissions((Activity) view.getContext(),
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-            }
-        });
+//        binding.ibAddImage.setOnClickListener(v -> {
+//            if (ActivityCompat.checkSelfPermission(view.getContext(),
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                Intent intent = new Intent();
+//                intent.setType("image/*");
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(intent, 10);
+//            } else {
+//                ActivityCompat.requestPermissions((Activity) view.getContext(),
+//                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+//            }
+//        });
+
+        binding.imgLayout.setBackgroundResource(R.drawable.img_bromo);
+
 
         binding.btnSubmit.setOnClickListener(v -> {
             String name = binding.etPostName.getText().toString();
@@ -105,46 +108,46 @@ public class CreateUpdateFragment extends Fragment {
         return this.view;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
-            try {
-                final Uri imageUri = data.getData();
-                final InputStream imageStream = ((AppCompatActivity)getActivity()).getContentResolver().openInputStream(imageUri);
-
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                int targetWidth = 1024;
-                int targetHeight = 768;
-                Bitmap scaledBitmap = Bitmap.createScaledBitmap(selectedImage, targetWidth, targetHeight, true);
-
-                imageFile = createTempImageFile(imageStream);
-                System.out.println(imageFile);
-
-                Glide.with(this)
-                        .load(scaledBitmap)
-                        .into(new SimpleTarget<Drawable>() {
-                            @Override
-                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                                binding.imgLayout.setBackground(resource);
-                            }
-
-                            @Override
-                            public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                                Log.d("Error load image", errorDrawable.toString());
-                            }
-                        });
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                Toast.makeText(view.getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
-            }
-
-        } else {
-            Toast.makeText(view.getContext(), "You haven't picked Image",Toast.LENGTH_LONG).show();
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
+//            try {
+//                final Uri imageUri = data.getData();
+//                final InputStream imageStream = ((AppCompatActivity)getActivity()).getContentResolver().openInputStream(imageUri);
+//
+//                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+//                int targetWidth = 1024;
+//                int targetHeight = 768;
+//                Bitmap scaledBitmap = Bitmap.createScaledBitmap(selectedImage, targetWidth, targetHeight, true);
+//
+//                imageFile = createTempImageFile(imageStream);
+//                System.out.println(imageFile);
+//
+//                Glide.with(this)
+//                        .load(scaledBitmap)
+//                        .into(new SimpleTarget<Drawable>() {
+//                            @Override
+//                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+//                                binding.imgLayout.setBackground(resource);
+//                            }
+//
+//                            @Override
+//                            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+//                                Log.d("Error load image", errorDrawable.toString());
+//                            }
+//                        });
+//
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//                Toast.makeText(view.getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+//            }
+//
+//        } else {
+//            Toast.makeText(view.getContext(), "You haven't picked Image",Toast.LENGTH_LONG).show();
+//        }
+//    }
 
     private void createData(String nama, String loc, String desc, int category) {
 //        File file = new File(imageFile.toURI());

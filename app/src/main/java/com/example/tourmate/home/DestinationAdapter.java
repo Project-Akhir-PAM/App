@@ -66,8 +66,13 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
 
                         @Override
                         public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                            Log.d("Error load image", errorDrawable.toString());
+                            if (errorDrawable != null) {
+                                binding.itemLayout.setBackground(errorDrawable);
+                            } else {
+                                Log.d("Error load image", "Drawable is null");
+                            }
                         }
+
                     });
 
             binding.itemLayout.setOnClickListener(v -> {
