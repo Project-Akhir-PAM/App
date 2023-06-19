@@ -33,6 +33,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.tourmate.R;
 import com.example.tourmate.api.ApiConfig;
 import com.example.tourmate.databinding.FragmentCreateUpdateBinding;
+import com.example.tourmate.response.CUDDestinationResponse;
 import com.example.tourmate.response.DestinationResponse;
 
 import java.io.File;
@@ -93,10 +94,25 @@ public class CreateUpdateFragment extends Fragment {
 
 
         binding.btnSubmit.setOnClickListener(v -> {
+            int category_id = 1;
             String name = binding.etPostName.getText().toString();
             String loc = binding.etPostLoc.getText().toString();
             String desc = binding.etPostCategory.getText().toString();
-            int category_id = 1;
+            String category = binding.spCategory.getSelectedItem().toString();
+            switch (category){
+                case "Nature":
+                    category_id = 1;
+                    break;
+                case "Museum":
+                    category_id = 2;
+                    break;
+                case "Amusement Park":
+                    category_id = 3;
+                    break;
+                case "Park":
+                    category_id = 4;
+                    break;
+            }
 
             if (name.isEmpty() || loc.isEmpty() || desc.isEmpty()) {
                 Toast.makeText(view.getContext(), "Harap lengkapi semua form", Toast.LENGTH_SHORT).show();
@@ -159,10 +175,10 @@ public class CreateUpdateFragment extends Fragment {
         RequestBody descRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), desc);
         RequestBody catIdRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(category));
 
-        Call<DestinationResponse> client = ApiConfig.getApiService().createDestination(nameRequestBody, locRequestBody, descRequestBody, catIdRequestBody);
-        client.enqueue(new Callback<DestinationResponse>() {
+        Call<CUDDestinationResponse> client = ApiConfig.getApiService().createDestination(nameRequestBody, locRequestBody, descRequestBody, catIdRequestBody);
+        client.enqueue(new Callback<CUDDestinationResponse>() {
             @Override
-            public void onResponse(Call<DestinationResponse> call, Response<DestinationResponse> response) {
+            public void onResponse(Call<CUDDestinationResponse> call, Response<CUDDestinationResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getStatus().equalsIgnoreCase("success")) {
                         Toast.makeText(view.getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -171,7 +187,7 @@ public class CreateUpdateFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<DestinationResponse> call, Throwable t) {
+            public void onFailure(Call<CUDDestinationResponse> call, Throwable t) {
                 Log.e("Error Retrofit", "onFailure: " + t.getMessage());
             }
         });
