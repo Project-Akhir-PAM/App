@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.tourmate.R;
 import com.example.tourmate.home.HomeFragment;
+import com.example.tourmate.navbar.NavbarActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -79,7 +80,7 @@ public class Register extends AppCompatActivity {
     }
 
     private void reload(){
-        startActivity(new Intent(getApplicationContext(), HomeFragment.class));
+        startActivity(new Intent(getApplicationContext(), NavbarActivity.class));
     }
 
     @Override
