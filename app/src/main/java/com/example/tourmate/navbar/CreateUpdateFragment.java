@@ -94,10 +94,25 @@ public class CreateUpdateFragment extends Fragment {
 
 
         binding.btnSubmit.setOnClickListener(v -> {
+            int category_id = 1;
             String name = binding.etPostName.getText().toString();
             String loc = binding.etPostLoc.getText().toString();
             String desc = binding.etPostCategory.getText().toString();
-            int category_id = 1;
+            String category = binding.spCategory.getSelectedItem().toString();
+            switch (category){
+                case "Nature":
+                    category_id = 1;
+                    break;
+                case "Museum":
+                    category_id = 2;
+                    break;
+                case "Amusement Park":
+                    category_id = 3;
+                    break;
+                case "Park":
+                    category_id = 4;
+                    break;
+            }
 
             if (name.isEmpty() || loc.isEmpty() || desc.isEmpty()) {
                 Toast.makeText(view.getContext(), "Harap lengkapi semua form", Toast.LENGTH_SHORT).show();
