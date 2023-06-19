@@ -1,4 +1,4 @@
-package com.example.tourmate.navbar;
+package com.example.tourmate.profile;
 
 import android.os.Bundle;
 

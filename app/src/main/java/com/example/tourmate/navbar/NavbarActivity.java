@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.tourmate.R;
 import com.example.tourmate.home.HomeFragment;
+import com.example.tourmate.profile.profileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class NavbarActivity extends AppCompatActivity {
