@@ -2,4 +2,8 @@
     <string name="app_name">TourMate</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+        <string name="nature_places">7 Tempat</string>
+        <string name="museum_places">6 Tempat</string>
+        <string name="amusement_park_places">4 Tempat</string>
+        <string name="park_places">3 Tempat</string>
 </resources>

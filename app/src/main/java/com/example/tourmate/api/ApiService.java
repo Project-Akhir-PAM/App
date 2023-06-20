@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 
 import com.example.tourmate.response.CUDDestinationResponse;
 import com.example.tourmate.response.DestinationResponse;
+import com.example.tourmate.response.DetailCategoryResponse;
+import com.example.tourmate.response.ListCategoryResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -52,5 +54,14 @@ public interface ApiService {
             @Field("description") String description,
             @Field("category_id") int categoryId
     );
+
+    @GET("category")
+    Call<ListCategoryResponse> getAllCategory();
+
+    @GET("category/{id}")
+    Call<DetailCategoryResponse> getDetailCategory(@Path("id") int categoryId);
+
+    @GET("category")
+    Call<DetailCategoryResponse> searchDetailCategory(@Query("search") String search);
 
 }
