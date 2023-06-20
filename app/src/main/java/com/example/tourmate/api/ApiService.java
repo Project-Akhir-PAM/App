@@ -36,7 +36,7 @@ public interface ApiService {
     @POST("destination/create")
     Call<CUDDestinationResponse> createDestination(
             @Part("name") RequestBody name,
-//            @Part MultipartBody.Part image,
+            @Part MultipartBody.Part image,
             @Part("location") RequestBody location,
             @Part("description") RequestBody description,
             @Part("category_id") RequestBody cat_id

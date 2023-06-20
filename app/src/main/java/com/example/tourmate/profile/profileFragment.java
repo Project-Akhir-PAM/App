@@ -18,12 +18,13 @@ import android.widget.TextView;
 
 import com.example.tourmate.R;
 import com.example.tourmate.auth.Login;
+import com.example.tourmate.databinding.FragmentEditProfileBinding;
 import com.example.tourmate.databinding.FragmentProfileBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class profileFragment extends Fragment {
 
-    FragmentProfileBinding binding;
+    FragmentEditProfileBinding binding;
     View view;
     private FirebaseAuth mAuth;
 
@@ -33,7 +34,7 @@ public class profileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentProfileBinding.inflate(inflater, container, false);
+        binding = FragmentEditProfileBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
         if (((AppCompatActivity)getActivity()).getSupportActionBar() != null) {
