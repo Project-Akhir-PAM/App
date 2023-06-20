@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.example.tourmate.R;
 import com.example.tourmate.auth.Login;
-import com.example.tourmate.databinding.FragmentHomeBinding;
 import com.example.tourmate.databinding.FragmentProfileBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -61,6 +60,8 @@ public class profileFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.logOut) {
             LogOut();
+        } else if (item.getItemId()==R.id.editProfile) {
+            
         }
 
         return super.onOptionsItemSelected(item);
