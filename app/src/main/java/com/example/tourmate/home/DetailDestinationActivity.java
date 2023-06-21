@@ -4,11 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -117,10 +121,7 @@ public class DetailDestinationActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-//                    boolean writtenToDisk = writeResponseBodyToDisk(response.body());
-//
-//                    Toast.makeText(DetailDestinationActivity.this, "download image sukses : "+writtenToDisk, Toast.LENGTH_SHORT).show();
-                    writeResponseBodyToMediaStore(response.body());
+                    saveImageToMediaStore(response.body());
                 }
             }
 
@@ -132,61 +133,7 @@ public class DetailDestinationActivity extends AppCompatActivity {
 
     }
 
-    private boolean writeResponseBodyToDisk(ResponseBody body) {
-        try {
-            String filename = getFilenameFromUrl(destination.getImage());
-            if (filename == null) {
-                filename = "image.png";
-            }
-
-            File imgDownload = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
-
-            InputStream inputStream = null;
-            OutputStream outputStream = null;
-
-            try {
-                byte[] fileReader = new byte[4096];
-
-                long fileSize = body.contentLength();
-                long fileSizeDownloaded = 0;
-
-                inputStream = body.byteStream();
-                outputStream = new FileOutputStream(imgDownload);
-
-                while (true) {
-                    int read = inputStream.read(fileReader);
-
-                    if (read == -1) {
-                        break;
-                    }
-
-                    outputStream.write(fileReader, 0, read);
-
-                    fileSizeDownloaded += read;
-
-                    Log.d("Image Download", "file download: " + fileSizeDownloaded + " of " + fileSize);
-                }
-
-                outputStream.flush();
-
-                return true;
-            } catch (IOException e) {
-                return false;
-            } finally {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            }
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    private void writeResponseBodyToMediaStore(ResponseBody body) {
+    private void saveImageToMediaStore(ResponseBody body) {
         try {
             String filename = getFilenameFromUrl(destination.getImage());
             if (filename == null) {
@@ -198,10 +145,7 @@ public class DetailDestinationActivity extends AppCompatActivity {
             contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
 
             ContentResolver contentResolver = getContentResolver();
-            Uri imageUri = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                imageUri = contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues);
-            }
+            Uri imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
 
             if (imageUri != null) {
                 OutputStream outputStream = contentResolver.openOutputStream(imageUri);
@@ -227,6 +171,7 @@ public class DetailDestinationActivity extends AppCompatActivity {
             Toast.makeText(DetailDestinationActivity.this, "Failed to download image", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private String getFilenameFromUrl(String url) {
         String filename = null;
