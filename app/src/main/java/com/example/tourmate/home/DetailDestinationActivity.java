@@ -5,11 +5,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -113,9 +117,10 @@ public class DetailDestinationActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    boolean writtenToDisk = writeResponseBodyToDisk(response.body());
-
-                    Toast.makeText(DetailDestinationActivity.this, "download image sukses : "+writtenToDisk, Toast.LENGTH_SHORT).show();
+//                    boolean writtenToDisk = writeResponseBodyToDisk(response.body());
+//
+//                    Toast.makeText(DetailDestinationActivity.this, "download image sukses : "+writtenToDisk, Toast.LENGTH_SHORT).show();
+                    writeResponseBodyToMediaStore(response.body());
                 }
             }
 
@@ -178,6 +183,48 @@ public class DetailDestinationActivity extends AppCompatActivity {
             }
         } catch (IOException e) {
             return false;
+        }
+    }
+
+    private void writeResponseBodyToMediaStore(ResponseBody body) {
+        try {
+            String filename = getFilenameFromUrl(destination.getImage());
+            if (filename == null) {
+                filename = "image.png";
+            }
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, filename);
+            contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+
+            ContentResolver contentResolver = getContentResolver();
+            Uri imageUri = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                imageUri = contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues);
+            }
+
+            if (imageUri != null) {
+                OutputStream outputStream = contentResolver.openOutputStream(imageUri);
+
+                if (outputStream != null) {
+                    InputStream inputStream = body.byteStream();
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    outputStream.flush();
+                    outputStream.close();
+                    inputStream.close();
+
+                    Toast.makeText(DetailDestinationActivity.this, "Image downloaded successfully", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(DetailDestinationActivity.this, "Failed to download image", Toast.LENGTH_SHORT).show();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(DetailDestinationActivity.this, "Failed to download image", Toast.LENGTH_SHORT).show();
         }
     }
 
