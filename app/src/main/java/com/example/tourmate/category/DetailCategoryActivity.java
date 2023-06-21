@@ -41,7 +41,6 @@ public class DetailCategoryActivity extends AppCompatActivity implements TextWat
         setContentView(binding.getRoot());
 
         this.dataItemList = new ArrayList<>();
-        binding.etSearch.addTextChangedListener(this);
 
         this.categoryAdapter = new CategoryAdapter();
         binding.rvDestination.setAdapter(this.categoryAdapter);
@@ -57,7 +56,15 @@ public class DetailCategoryActivity extends AppCompatActivity implements TextWat
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        binding.etSearch.addTextChangedListener(this);
+
         getDetailCategory(); // Retrieve data from the API
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void getDetailCategory() {
@@ -69,6 +76,7 @@ public class DetailCategoryActivity extends AppCompatActivity implements TextWat
                     if (response.isSuccessful()) {
                         DetailCategoryResponse destinationResponse = response.body();
                         if (destinationResponse != null) {
+                            dataItemList.clear();
                             dataItemList.addAll(destinationResponse.getData().getDestinations());
 
                             // Update the data in the adapter and notify the changes
@@ -89,43 +97,25 @@ public class DetailCategoryActivity extends AppCompatActivity implements TextWat
         }
     }
 
-    private void searchDetailCategory() {
-        ApiService apiService = ApiConfig.getApiService();
-        Call<DetailCategoryResponse> client = apiService.searchDetailCategory(binding.etSearch.getText().toString());
-        client.enqueue(new Callback<DetailCategoryResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<DetailCategoryResponse> call, @NonNull Response<DetailCategoryResponse> response) {
-                dataItemList.clear();
-                if (response.isSuccessful()) {
-                    DetailCategoryResponse destinationResponse = response.body();
-                    if (destinationResponse != null) {
-                        dataItemList.addAll(destinationResponse.getData().getDestinations());
-
-                        // Update the data in the adapter and notify the changes
-                        categoryAdapter.setDestinationList(dataItemList);
-                    } else {
-                        Log.e("dataItemList", "data is null: " + response.message());
-                    }
-                } else {
-                    Log.e("Error Retrofit", "onResponse: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<DetailCategoryResponse> call, @NonNull Throwable t) {
-                Log.e("Error Retrofit", "onFailure: " + t.getMessage());
-            }
-        });
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    }
 
     @Override
     public void afterTextChanged(Editable s) {
-        searchDetailCategory();
+        String searchQuery = s.toString();
+        if (searchQuery.length() == 0) {
+            getDetailCategory();
+        } else {
+            categoryAdapter.getFilter().filter(searchQuery);
+        }
     }
 }

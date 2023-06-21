@@ -63,7 +63,4 @@ public interface ApiService {
     @GET("category/{id}")
     Call<DetailCategoryResponse> getDetailCategory(@Path("id") int categoryId);
 
-    @GET("category")
-    Call<DetailCategoryResponse> searchDetailCategory(@Query("search") String search);
-
 }

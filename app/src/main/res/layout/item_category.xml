@@ -17,6 +17,7 @@
         android:background="@drawable/img_nature">
 
         <View
+            android:id="@+id/view5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0.5"
@@ -26,26 +27,26 @@
             android:id="@+id/tvItemTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="17dp"
-            android:layout_marginRight="12dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/white"
             android:textSize="17sp"
-            app:layout_constraintBottom_toTopOf="@id/tvItemDesc"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/view5"
             tools:text="Title Category" />
 
-        <TextView
-            android:id="@+id/tvItemDesc"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="14dp"
-            android:maxLines="2"
-            android:textColor="@color/yellow"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tvItemTitle"
-            tools:text="5 Tempat" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvItemDesc"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="6dp"-->
+<!--            android:layout_marginBottom="14dp"-->
+<!--            android:maxLines="2"-->
+<!--            android:textColor="@color/yellow"-->
+<!--            android:textSize="14sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="@id/tvItemTitle"-->
+<!--            tools:text="5 Tempat" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
