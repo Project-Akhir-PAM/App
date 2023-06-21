@@ -107,15 +107,19 @@ public class DetailCategoryActivity extends AppCompatActivity implements TextWat
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
+        String query = s.toString().trim();
+        if (query.isEmpty()) {
+            // Show all categories
+            categoryAdapter.setDestinationList(dataItemList);
+        } else {
+            // Filter the dataItemList based on the search query
+            categoryAdapter.getFilter().filter( query );
+        }
+
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-        String searchQuery = s.toString();
-        if (searchQuery.length() == 0) {
-            getDetailCategory();
-        } else {
-            categoryAdapter.getFilter().filter(searchQuery);
-        }
+
     }
 }

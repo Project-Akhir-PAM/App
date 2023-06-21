@@ -1,6 +1,8 @@
 package com.example.tourmate.category;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +60,29 @@ public class searchFragment extends Fragment {
             TextView tvTitle = getActivity().findViewById(R.id.tvTitle);
             tvTitle.setText("Search");
         }
+        binding.etSearch.addTextChangedListener( new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                String query = s.toString().trim();
+                if (query.isEmpty()) {
+                    // Show all categories
+                    categoryListAdapter.setCategoryList(dataItemList);
+                } else {
+                    // Filter the dataItemList based on the search query
+                    categoryListAdapter.filter(query);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        } );
 
         getListCategory();
 
@@ -89,4 +114,5 @@ public class searchFragment extends Fragment {
             }
         });
     }
+
 }

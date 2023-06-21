@@ -54,6 +54,17 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         return dataItemList.size();
     }
 
+    public void filter(String query) {
+        List<Destination> filteredList = new ArrayList<>();
+        for (Destination item : dataItemList) {
+            if (item.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        setCategoryList(filteredList);
+    }
+
+
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
         final ItemCategoryBinding binding;
 
