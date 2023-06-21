@@ -48,7 +48,7 @@ public class CreateUpdateFragment extends Fragment {
     private String[] items = {"", "Nature", "Museum", "Amusement Park", "Park"};
     private View view;
     private String selectedImage;
-    int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 9001;
+    private int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 9001;
 
     public CreateUpdateFragment() {
         // Required empty public constructor
@@ -105,10 +105,9 @@ public class CreateUpdateFragment extends Fragment {
                     break;
             }
 
-            if (name.isEmpty() || loc.isEmpty() || desc.isEmpty()) {
+            if (name.isEmpty() || loc.isEmpty() || desc.isEmpty() || category.isEmpty()) {
                 Toast.makeText(view.getContext(), "Harap lengkapi semua form", Toast.LENGTH_SHORT).show();
             } else {
-                Log.d("TES", "onCreateView: "+selectedImage);
                 createData(name, loc, desc, category_id);
             }
         });
@@ -167,7 +166,7 @@ public class CreateUpdateFragment extends Fragment {
                 Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(gallery, 1);
             } else {
-                // Izin ditolak, berikan penanganan sesuai kebutuhan aplikasi
+                // Izin ditolak, muncul Toast
                 Toast.makeText(getActivity(), "Izin akses penyimpanan ditolak.", Toast.LENGTH_SHORT).show();
             }
         }

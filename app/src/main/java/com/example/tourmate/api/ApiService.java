@@ -45,14 +45,16 @@ public interface ApiService {
     @DELETE("destination/delete/{id}")
     Call<CUDDestinationResponse> deleteDestination(@Path("id") int id);
 
-    @FormUrlEncoded
-    @PATCH("destination/update/{id}")
+    @Multipart
+    @POST("destination/update/{id}")
     Call<CUDDestinationResponse> updateDestination(
             @Path("id") int id,
-            @Field("name") String name,
-            @Field("location") String location,
-            @Field("description") String description,
-            @Field("category_id") int categoryId
+            @Query("_method") String method,
+            @Part("name") RequestBody name,
+            @Part MultipartBody.Part image,
+            @Part("location") RequestBody location,
+            @Part("description") RequestBody description,
+            @Part("category_id") RequestBody cat_id
     );
 
     @GET("category")
