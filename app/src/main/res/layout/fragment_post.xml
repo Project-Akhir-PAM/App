@@ -8,7 +8,7 @@
     android:paddingTop="29dp"
     android:paddingRight="27dp"
     android:paddingBottom="29dp"
-    tools:context=".post.CreateUpdateFragment">
+    tools:context=".post.PostFragment">
 
     <ScrollView
         android:layout_width="0dp"

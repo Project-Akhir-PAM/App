@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.tourmate.R;
 import com.example.tourmate.category.searchFragment;
 import com.example.tourmate.home.HomeFragment;
-import com.example.tourmate.post.CreateUpdateFragment;
+import com.example.tourmate.post.PostFragment;
 import com.example.tourmate.profile.profileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -37,7 +37,7 @@ public class NavbarActivity extends AppCompatActivity {
                     replaceFragment(new searchFragment());
                     break;
                 case R.id.favorite:
-                    replaceFragment(new CreateUpdateFragment());
+                    replaceFragment(new PostFragment());
                     break;
                 case R.id.profile:
                     replaceFragment(new profileFragment());

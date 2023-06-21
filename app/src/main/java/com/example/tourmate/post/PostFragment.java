@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.tourmate.R;
 import com.example.tourmate.api.ApiConfig;
-import com.example.tourmate.databinding.FragmentCreateUpdateBinding;
+import com.example.tourmate.databinding.FragmentPostBinding;
 import com.example.tourmate.helper.FileUtils;
 import com.example.tourmate.response.CUDDestinationResponse;
 
@@ -42,22 +43,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CreateUpdateFragment extends Fragment {
+public class PostFragment extends Fragment {
 
-    private FragmentCreateUpdateBinding binding;
+    private FragmentPostBinding binding;
     private String[] items = {"", "Nature", "Museum", "Amusement Park", "Park"};
     private View view;
     private String selectedImage;
     private int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 9001;
+    private MultipartBody.Part filePart;
 
-    public CreateUpdateFragment() {
+    public PostFragment() {
         // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentCreateUpdateBinding.inflate(inflater, container, false);
+        binding = FragmentPostBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
         if (((AppCompatActivity)getActivity()).getSupportActionBar() != null) {
@@ -116,16 +118,22 @@ public class CreateUpdateFragment extends Fragment {
     }
 
     private void createData(String nama, String loc, String desc, int category) {
-        File file = new File(Uri.parse(selectedImage).getPath());
-        RequestBody imageRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        MultipartBody.Part filePart = MultipartBody.Part.createFormData("img", file.getName(), imageRequestBody);
+        // Cek apakah selectedImage tidak kosong atau null
+        if (!TextUtils.isEmpty(selectedImage)) {
+            File file = new File(Uri.parse(selectedImage).getPath());
+            RequestBody imageRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            this.filePart = MultipartBody.Part.createFormData("img", file.getName(), imageRequestBody);
+        } else {
+            Toast.makeText(view.getContext(), "Harap pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         RequestBody nameRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), nama);
         RequestBody locRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), loc);
         RequestBody descRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), desc);
         RequestBody catIdRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(category));
 
-        Call<CUDDestinationResponse> client = ApiConfig.getApiService().createDestination(nameRequestBody, filePart, locRequestBody, descRequestBody, catIdRequestBody);
+        Call<CUDDestinationResponse> client = ApiConfig.getApiService().createDestination(nameRequestBody, this.filePart, locRequestBody, descRequestBody, catIdRequestBody);
         client.enqueue(new Callback<CUDDestinationResponse>() {
             @Override
             public void onResponse(Call<CUDDestinationResponse> call, Response<CUDDestinationResponse> response) {
@@ -150,8 +158,8 @@ public class CreateUpdateFragment extends Fragment {
         if (resultCode != RESULT_CANCELED) {
             if (resultCode == RESULT_OK && requestCode == 1 && data != null) {
                 Uri image = data.getData();
-                selectedImage = FileUtils.getPath(CreateUpdateFragment.this.getContext(), image);
-                Glide.with(CreateUpdateFragment.this).load(image).into(binding.ivImage);
+                selectedImage = FileUtils.getPath(PostFragment.this.getContext(), image);
+                Glide.with(PostFragment.this).load(image).into(binding.ivImage);
             }
         }
 

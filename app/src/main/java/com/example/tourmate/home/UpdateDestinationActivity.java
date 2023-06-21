@@ -19,14 +19,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.tourmate.R;
 import com.example.tourmate.api.ApiConfig;
 import com.example.tourmate.databinding.ActivityDetailDestinationBinding;
 import com.example.tourmate.databinding.ActivityUpdateDestinationBinding;
 import com.example.tourmate.helper.FileUtils;
 import com.example.tourmate.model.Destination;
 import com.example.tourmate.navbar.NavbarActivity;
-import com.example.tourmate.post.CreateUpdateFragment;
 import com.example.tourmate.response.CUDDestinationResponse;
 
 import java.io.File;

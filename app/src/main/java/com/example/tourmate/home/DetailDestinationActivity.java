@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,14 +20,28 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.tourmate.R;
 import com.example.tourmate.api.ApiConfig;
+import com.example.tourmate.api.ApiService;
 import com.example.tourmate.databinding.ActivityDetailDestinationBinding;
 import com.example.tourmate.model.Destination;
 import com.example.tourmate.navbar.NavbarActivity;
 import com.example.tourmate.response.CUDDestinationResponse;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailDestinationActivity extends AppCompatActivity {
 
@@ -63,8 +78,12 @@ public class DetailDestinationActivity extends AppCompatActivity {
                             Log.d("Error load image", errorDrawable.toString());
                         }
                     });
-        }
 
+            binding.ibDownload.setOnClickListener(v -> {
+                downloadImage();
+            });
+
+        }
 
         binding.btnEdit.setOnClickListener(v -> {
             Intent i = new Intent(DetailDestinationActivity.this, UpdateDestinationActivity.class);
@@ -73,6 +92,105 @@ public class DetailDestinationActivity extends AppCompatActivity {
             startActivity(i);
         });
 
+    }
+
+    private void downloadImage() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor()
+                .setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://tourmate.ruangbaca-fisipedu.my.id/")
+                .client(client)
+                .build();
+
+        ApiService apiService = retrofit.create(ApiService.class);
+        Call<ResponseBody> call = apiService.downloadImage(destination.getImage());
+        Log.d("TES", "downloadImage: "+destination.getImage());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    boolean writtenToDisk = writeResponseBodyToDisk(response.body());
+
+                    Toast.makeText(DetailDestinationActivity.this, "download image sukses : "+writtenToDisk, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("Error Retrofit", "onFailure: " + t.getMessage());
+            }
+        });
+
+    }
+
+    private boolean writeResponseBodyToDisk(ResponseBody body) {
+        try {
+            String filename = getFilenameFromUrl(destination.getImage());
+            if (filename == null) {
+                filename = "image.png";
+            }
+
+            File imgDownload = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
+
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+
+            try {
+                byte[] fileReader = new byte[4096];
+
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
+
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(imgDownload);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+
+                    if (read == -1) {
+                        break;
+                    }
+
+                    outputStream.write(fileReader, 0, read);
+
+                    fileSizeDownloaded += read;
+
+                    Log.d("Image Download", "file download: " + fileSizeDownloaded + " of " + fileSize);
+                }
+
+                outputStream.flush();
+
+                return true;
+            } catch (IOException e) {
+                return false;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    private String getFilenameFromUrl(String url) {
+        String filename = null;
+        try {
+            URL parsedUrl = new URL(url);
+            String path = parsedUrl.getPath();
+            filename = path.substring(path.lastIndexOf('/') + 1);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return filename;
     }
 
     @Override
