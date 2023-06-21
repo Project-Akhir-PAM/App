@@ -65,7 +65,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         public void bind(Destination dataItem) {
             binding.tvItemTitle.setText(dataItem.getName());
             if (dataItem.getId() == 1) {
-                binding.tvItemDesc.setText(itemView.getContext().getText(R.string.nature_places));
+//                binding.tvItemDesc.setText(itemView.getContext().getText(R.string.nature_places));
 
                 Glide.with(itemView.getContext())
                         .load(ContextCompat.getDrawable(itemView.getContext(), R.drawable.img_nature))
@@ -93,7 +93,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 params.setMargins(0, marginInDp, 0, 0);
                 binding.container.setLayoutParams(params);
 
-                binding.tvItemDesc.setText(itemView.getContext().getText(R.string.museum_places));
+//                binding.tvItemDesc.setText(itemView.getContext().getText(R.string.museum_places));
                 Glide.with(itemView.getContext())
                         .load(ContextCompat.getDrawable(itemView.getContext(), R.drawable.img_museum))
                         .into(new SimpleTarget<Drawable>() {
@@ -108,7 +108,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                             }
                         });
             } else if (dataItem.getId() == 3) {
-                binding.tvItemDesc.setText(itemView.getContext().getText(R.string.amusement_park_places));
+//                binding.tvItemDesc.setText(itemView.getContext().getText(R.string.amusement_park_places));
                 Glide.with(itemView.getContext())
                         .load(ContextCompat.getDrawable(itemView.getContext(), R.drawable.img_amusement_park))
                         .into(new SimpleTarget<Drawable>() {
@@ -123,7 +123,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                             }
                         });
             } else if (dataItem.getId() == 4) {
-                binding.tvItemDesc.setText(itemView.getContext().getText(R.string.park_places));
+//                binding.tvItemDesc.setText(itemView.getContext().getText(R.string.park_places));
                 Glide.with(itemView.getContext())
                         .load(ContextCompat.getDrawable(itemView.getContext(), R.drawable.img_park))
                         .into(new SimpleTarget<Drawable>() {

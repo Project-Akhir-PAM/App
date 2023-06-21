@@ -1,12 +1,12 @@
 package com.example.tourmate.category;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,14 +21,14 @@ import com.example.tourmate.model.Destination;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.DestinationViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.DestinationViewHolder> implements Filterable {
     private List<Destination> dataItemList = new ArrayList<>();
-
+    CustomFilter filter;
 
     public CategoryAdapter() {
         super();
-
     }
 
     public void setDestinationList(List<Destination> dataList) {
@@ -54,6 +54,43 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Destin
     @Override
     public int getItemCount() {
         return dataItemList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (filter == null) {
+            filter = new CustomFilter();
+        }
+        return filter;
+    }
+
+    private class CustomFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            String charString = constraint.toString().toLowerCase(Locale.ROOT).trim();
+            FilterResults filterResults = new FilterResults();
+
+            if (charString.length() == 0) {
+                filterResults.values = dataItemList;
+            } else {
+                ArrayList<Destination> filters = new ArrayList<>();
+                for (int i = 0; i < dataItemList.size(); i++) {
+                    if (dataItemList.get(i).getName().toLowerCase().contains(charString)) {
+                        filters.add(dataItemList.get(i));
+                    }
+                }
+                filterResults.values = filters;
+            }
+
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults results) {
+            dataItemList = (ArrayList<Destination>) results.values;
+            notifyDataSetChanged();
+        }
     }
 
     public class DestinationViewHolder extends RecyclerView.ViewHolder {
@@ -84,9 +121,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Destin
             binding.itemLayout.setOnClickListener(v -> {
 //                Toast.makeText(itemView.getContext(), "TES : " + dataItem.getName(), Toast.LENGTH_SHORT).show();
 
-                    Intent i = new Intent(itemView.getContext(), DetailDestinationActivity.class);
-                    i.putExtra("get_destination", dataItem);
-                    itemView.getContext().startActivity(i);
+                Intent i = new Intent(itemView.getContext(), DetailDestinationActivity.class);
+                i.putExtra("get_destination", dataItem);
+                itemView.getContext().startActivity(i);
 
             });
         }
