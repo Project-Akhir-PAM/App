@@ -6,13 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.tourmate.R;
-import com.example.tourmate.home.HomeFragment;
+import com.example.tourmate.model.User;
 import com.example.tourmate.navbar.NavbarActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,12 +22,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
 
     FirebaseAuth auth;
 
-    EditText FirstName, LastName, Email, Password, ConfirmPassword, Phone;
+    EditText FirstName, LastName, Email, Password, ConfirmPassword, Phone, BirthDate;
+
+    Spinner Gender;
+
     Button btnRegister;
 
     @Override
@@ -41,6 +48,8 @@ public class Register extends AppCompatActivity {
         Password = findViewById(R.id.inputPassword);
         ConfirmPassword = findViewById(R.id.inputConfirmPassword);
         Phone = findViewById(R.id.inputPhone);
+        Gender = findViewById(R.id.spinnerGender);
+        BirthDate = findViewById(R.id.inputBirthDate);
         btnRegister = findViewById(R.id.btnRegister);
 
         btnRegister.setOnClickListener(v ->{
@@ -66,13 +75,40 @@ public class Register extends AppCompatActivity {
                         firebaseUser.updateProfile(request).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                reload();
+                                if (task.isSuccessful()) {
+                                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+                                    String userId = firebaseUser.getUid();
+
+                                    User user = new User();
+                                    user.setFirstName(FirstName.getText().toString());
+                                    user.setLastName(LastName.getText().toString());
+                                    user.setEmail(Email.getText().toString());
+                                    user.setPhone(Phone.getText().toString());
+                                    user.setGender(Gender.getSelectedItem().toString());
+                                    user.setBirthDate(BirthDate.getText().toString());
+
+                                    Log.d("RegisterActivity", "Gender: " + Gender.getSelectedItem().toString());
+                                    Log.d("RegisterActivity", "Birth Date: " + BirthDate.getText().toString());
+
+                                    userRef.child(userId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                reload();
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "Gagal menyimpan data pengguna ke database", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Gagal memperbarui profil pengguna", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
-                    }else{
+                    } else {
                         Toast.makeText(getApplicationContext(), "Gagal Registrasi", Toast.LENGTH_SHORT).show();
                     }
-                }else{
+                } else {
                     Toast.makeText(getApplicationContext(), task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
