@@ -59,6 +59,57 @@
                 app:layout_constraintTop_toBottomOf="@+id/etPostName" />
 
             <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="Latitude - Longitude"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etPostLoc" />
+
+            <EditText
+                android:id="@+id/etPostLat"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_et_form"
+                android:ems="10"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                app:layout_constraintBottom_toBottomOf="@+id/etPostLat"
+                app:layout_constraintStart_toEndOf="@+id/etPostLat"
+                app:layout_constraintTop_toTopOf="@+id/etPostLat" />
+
+            <EditText
+                android:id="@+id/etPostLong"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bg_et_form"
+                android:ems="10"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/etPostLat"
+                app:layout_constraintStart_toEndOf="@+id/textView10" />
+
+            <TextView
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,8 +118,8 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/etPostLoc"
-                app:layout_constraintTop_toBottomOf="@+id/etPostLoc" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etPostLat" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -138,7 +189,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <EditText
-                android:id="@+id/etPostCategory"
+                android:id="@+id/etPostDesc"
                 android:layout_width="0dp"
                 android:layout_height="84dp"
                 android:background="@drawable/bg_et_form"
@@ -173,7 +224,7 @@
                 android:backgroundTint="#8DB11B"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etPostCategory" />
+                app:layout_constraintTop_toBottomOf="@+id/etPostDesc" />
 
             <Spinner
                 android:id="@+id/spCategory"

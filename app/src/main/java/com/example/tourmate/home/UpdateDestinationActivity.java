@@ -64,6 +64,8 @@ public class UpdateDestinationActivity extends AppCompatActivity {
             binding.etEdtName.setText(destination.getName());
             binding.etEdtLoc.setText(destination.getLocation());
             binding.etEdtDesc.setText(destination.getDescription());
+            binding.etEdtLat.setText(destination.getLatitude());
+            binding.etEdtLong.setText(destination.getLongitude());
             Glide.with(UpdateDestinationActivity.this).load(destination.getImage()).into(binding.ivImage);
 
             int cat_id = destination.getCategoryId();
@@ -105,6 +107,8 @@ public class UpdateDestinationActivity extends AppCompatActivity {
 
             String name = binding.etEdtName.getText().toString();
             String loc = binding.etEdtLoc.getText().toString();
+            String latitude = binding.etEdtLat.getText().toString();
+            String longitude = binding.etEdtLong.getText().toString();
             String desc = binding.etEdtDesc.getText().toString();
 
             String category = binding.spEdtCategory.getSelectedItem().toString();
@@ -126,13 +130,13 @@ public class UpdateDestinationActivity extends AppCompatActivity {
             if (name.isEmpty() || loc.isEmpty() || desc.isEmpty() || category.isEmpty()) {
                 Toast.makeText(this, "Harap lengkapi semua form", Toast.LENGTH_SHORT).show();
             } else {
-                updateData(name, loc, desc, category_id);
+                updateData(name, loc, latitude, longitude, desc, category_id);
             }
         });
 
     }
 
-    private void updateData(String name, String loc, String desc, int category_id) {
+    private void updateData(String name, String loc, String latitude, String longitude, String desc, int category_id) {
         // Cek apakah selectedImage tidak kosong atau null
         if (!TextUtils.isEmpty(selectedImage)) {
             File file = new File(Uri.parse(selectedImage).getPath());
@@ -145,10 +149,14 @@ public class UpdateDestinationActivity extends AppCompatActivity {
 
         RequestBody nameRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), name);
         RequestBody locRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), loc);
+        RequestBody latitudeRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), latitude);
+        RequestBody longitudeRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), longitude);
         RequestBody descRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), desc);
         RequestBody catIdRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(category_id));
 
-        Call<CUDDestinationResponse> client = ApiConfig.getApiService().updateDestination(destination.getId(), "patch", nameRequestBody, this.filePart, locRequestBody, descRequestBody, catIdRequestBody);
+        Call<CUDDestinationResponse> client = ApiConfig.getApiService()
+                .updateDestination(destination.getId(), "patch", nameRequestBody, this.filePart,
+                        locRequestBody, latitudeRequestBody, longitudeRequestBody, descRequestBody, catIdRequestBody);
         client.enqueue(new Callback<CUDDestinationResponse>() {
             @Override
             public void onResponse(Call<CUDDestinationResponse> call, Response<CUDDestinationResponse> response) {

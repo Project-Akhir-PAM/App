@@ -40,6 +40,8 @@ public interface ApiService {
             @Part("name") RequestBody name,
             @Part MultipartBody.Part image,
             @Part("location") RequestBody location,
+            @Part("latitude") RequestBody latitude,
+            @Part("longitude") RequestBody longitude,
             @Part("description") RequestBody description,
             @Part("category_id") RequestBody cat_id
     );
@@ -55,6 +57,8 @@ public interface ApiService {
             @Part("name") RequestBody name,
             @Part MultipartBody.Part image,
             @Part("location") RequestBody location,
+            @Part("latitude") RequestBody latitude,
+            @Part("longitude") RequestBody longitude,
             @Part("description") RequestBody description,
             @Part("category_id") RequestBody cat_id
     );

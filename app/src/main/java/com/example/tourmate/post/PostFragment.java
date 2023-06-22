@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -32,6 +34,7 @@ import com.example.tourmate.R;
 import com.example.tourmate.api.ApiConfig;
 import com.example.tourmate.databinding.FragmentPostBinding;
 import com.example.tourmate.helper.FileUtils;
+import com.example.tourmate.home.HomeFragment;
 import com.example.tourmate.response.CUDDestinationResponse;
 
 import java.io.File;
@@ -90,7 +93,9 @@ public class PostFragment extends Fragment {
             int category_id = 1;
             String name = binding.etPostName.getText().toString();
             String loc = binding.etPostLoc.getText().toString();
-            String desc = binding.etPostCategory.getText().toString();
+            String latitude = binding.etPostLat.getText().toString();
+            String longitude = binding.etPostLong.getText().toString();
+            String desc = binding.etPostDesc.getText().toString();
             String category = binding.spCategory.getSelectedItem().toString();
             switch (category){
                 case "Nature":
@@ -110,14 +115,14 @@ public class PostFragment extends Fragment {
             if (name.isEmpty() || loc.isEmpty() || desc.isEmpty() || category.isEmpty()) {
                 Toast.makeText(view.getContext(), "Harap lengkapi semua form", Toast.LENGTH_SHORT).show();
             } else {
-                createData(name, loc, desc, category_id);
+                createData(name, loc, latitude, longitude, desc, category_id);
             }
         });
 
         return this.view;
     }
 
-    private void createData(String nama, String loc, String desc, int category) {
+    private void createData(String nama, String loc, String latitude, String longitude, String desc, int category) {
         // Cek apakah selectedImage tidak kosong atau null
         if (!TextUtils.isEmpty(selectedImage)) {
             File file = new File(Uri.parse(selectedImage).getPath());
@@ -130,16 +135,21 @@ public class PostFragment extends Fragment {
 
         RequestBody nameRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), nama);
         RequestBody locRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), loc);
+        RequestBody latRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), latitude);
+        RequestBody longRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), longitude);
         RequestBody descRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), desc);
         RequestBody catIdRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(category));
 
-        Call<CUDDestinationResponse> client = ApiConfig.getApiService().createDestination(nameRequestBody, this.filePart, locRequestBody, descRequestBody, catIdRequestBody);
+        Call<CUDDestinationResponse> client = ApiConfig.getApiService()
+                .createDestination(nameRequestBody, this.filePart, locRequestBody,
+                        latRequestBody, longRequestBody, descRequestBody, catIdRequestBody);
         client.enqueue(new Callback<CUDDestinationResponse>() {
             @Override
             public void onResponse(Call<CUDDestinationResponse> call, Response<CUDDestinationResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getStatus().equalsIgnoreCase("success")) {
                         Toast.makeText(view.getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        getActivity().finish();
                     }
                 }
             }
