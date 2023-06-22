@@ -33,6 +33,12 @@ import com.example.tourmate.databinding.ActivityDetailDestinationBinding;
 import com.example.tourmate.model.Destination;
 import com.example.tourmate.navbar.NavbarActivity;
 import com.example.tourmate.response.CUDDestinationResponse;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,10 +57,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DetailDestinationActivity extends AppCompatActivity {
+public class DetailDestinationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    ActivityDetailDestinationBinding binding;
-    Destination destination;
+    private ActivityDetailDestinationBinding binding;
+    private Destination destination;
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +74,11 @@ public class DetailDestinationActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Back");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         destination = getIntent().getParcelableExtra("get_destination");
         if (destination != null) {
@@ -100,6 +112,15 @@ public class DetailDestinationActivity extends AppCompatActivity {
             startActivity(i);
         });
 
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+
+        LatLng position = new LatLng(Double.parseDouble(destination.getLatitude()), Double.parseDouble(destination.getLongitude()));
+        mMap.addMarker(new MarkerOptions().position(position).title("Marker in : "+destination.getName()));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
     }
 
     private void downloadImage() {
@@ -240,4 +261,5 @@ public class DetailDestinationActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
     }
+
 }

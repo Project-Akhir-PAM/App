@@ -24,6 +24,12 @@ public class Destination implements Parcelable {
     @SerializedName("description")
     private String description;
 
+    @SerializedName("longitude")
+    private String longitude;
+
+    @SerializedName("latitude")
+    private String latitude;
+
     @SerializedName("category_id")
     private int categoryId;
 
@@ -75,13 +81,31 @@ public class Destination implements Parcelable {
         this.categoryId = categoryId;
     }
 
-    public Destination(int id, String name, String image, String location, String description, int categoryId) {
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public Destination(int id, String name, String image, String location, String description, int categoryId, String longitude, String latitude) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.location = location;
         this.description = description;
         this.categoryId = categoryId;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public Destination() {
@@ -99,6 +123,8 @@ public class Destination implements Parcelable {
         dest.writeString(this.image);
         dest.writeString(this.location);
         dest.writeString(this.description);
+        dest.writeString(this.longitude);
+        dest.writeString(this.latitude);
         dest.writeInt(this.categoryId);
     }
 
@@ -108,6 +134,8 @@ public class Destination implements Parcelable {
         this.image = in.readString();
         this.location = in.readString();
         this.description = in.readString();
+        this.longitude = in.readString();
+        this.latitude = in.readString();
         this.categoryId = in.readInt();
     }
 
