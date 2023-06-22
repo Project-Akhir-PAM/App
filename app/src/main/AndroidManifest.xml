@@ -38,9 +38,6 @@
             android:name=".category.DetailCategoryActivity"
             android:exported="false"></activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".home.DetailDestinationActivity"
             android:exported="false" />
         <activity
