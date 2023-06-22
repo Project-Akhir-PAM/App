@@ -7,4 +7,11 @@
         <string name="museum_places">6 Tempat</string>
         <string name="amusement_park_places">4 Tempat</string>
         <string name="park_places">3 Tempat</string>
+
+    <string-array name="gender_array">
+        <item>Gender</item>
+        <item>Laki-laki</item>
+        <item>Perempuan</item>
+    </string-array>
+
 </resources>
