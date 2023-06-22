@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.tourmate.R;
@@ -24,9 +25,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class profileFragment extends Fragment {
 
-    FragmentEditProfileBinding binding;
+    FragmentProfileBinding binding;
     View view;
     private FirebaseAuth mAuth;
+    Button bt_upload;
 
     public profileFragment() {
         // Required empty public constructor
@@ -34,7 +36,7 @@ public class profileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentEditProfileBinding.inflate(inflater, container, false);
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
         if (((AppCompatActivity)getActivity()).getSupportActionBar() != null) {
@@ -43,6 +45,7 @@ public class profileFragment extends Fragment {
             TextView tvTitle = getActivity().findViewById(R.id.tvTitle);
             tvTitle.setText("Profile");
         }
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -62,7 +65,7 @@ public class profileFragment extends Fragment {
         if (item.getItemId() == R.id.logOut) {
             LogOut();
         } else if (item.getItemId()==R.id.editProfile) {
-            
+
         }
 
         return super.onOptionsItemSelected(item);
