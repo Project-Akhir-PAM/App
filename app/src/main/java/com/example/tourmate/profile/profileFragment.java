@@ -7,7 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,19 +19,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tourmate.R;
 import com.example.tourmate.auth.Login;
 import com.example.tourmate.databinding.FragmentEditProfileBinding;
 import com.example.tourmate.databinding.FragmentProfileBinding;
+import com.example.tourmate.model.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class profileFragment extends Fragment {
 
     FragmentProfileBinding binding;
     View view;
     private FirebaseAuth mAuth;
-    Button bt_upload;
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
+
 
     public profileFragment() {
         // Required empty public constructor
@@ -46,10 +58,28 @@ public class profileFragment extends Fragment {
             tvTitle.setText("Profile");
         }
 
-
         mAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance("https://tourmate-a3731-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        databaseReference = firebaseDatabase.getReference();
 
         setHasOptionsMenu(true);
+
+        databaseReference.child("users").child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                binding.tvName.setText(user.getFirstName() + " " + user.getLastName());
+                binding.tvEmail.setText(user.getEmail());
+                binding.tvTelephone.setText(user.getPhone());
+                binding.tvGender.setText(user.getGender());
+                binding.tvBirthdate.setText(user.getBirthDate());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ERROR", "onCancelled: "+error);
+            }
+        });
 
         return this.view;
     }
@@ -65,11 +95,15 @@ public class profileFragment extends Fragment {
         if (item.getItemId() == R.id.logOut) {
             LogOut();
         } else if (item.getItemId()==R.id.editProfile) {
-
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, new EditProfileFragment());
+            fragmentTransaction.commit();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     private void LogOut() {
         mAuth.signOut();

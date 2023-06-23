@@ -9,8 +9,17 @@ public class User {
     private String birthDate;
 
     public User() {
+
     }
 
+    public User(String firstName, String lastName, String email, String phone, String gender, String birthDate) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+        this.birthDate = birthDate;
+    }
 
     public String getFirstName() {
         return firstName;

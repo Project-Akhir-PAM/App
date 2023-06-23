@@ -58,22 +58,6 @@
         tools:text="email" />
 
     <TextView
-        android:id="@+id/tvPassword"
-        android:layout_width="315dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/bg_text"
-        android:drawableStart="@drawable/locked_padlock_1"
-        android:elevation="20dp"
-        android:padding="10dp"
-        android:password="true"
-        android:textAlignment="textStart"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/tvEmail"
-        app:layout_constraintTop_toBottomOf="@+id/tvEmail"
-        tools:text="password" />
-
-    <TextView
         android:id="@+id/tvTelephone"
         android:layout_width="315dp"
         android:layout_height="wrap_content"
@@ -84,8 +68,8 @@
         android:padding="10dp"
         android:textAlignment="textStart"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/tvPassword"
-        app:layout_constraintTop_toBottomOf="@+id/tvPassword"
+        app:layout_constraintStart_toStartOf="@+id/tvEmail"
+        app:layout_constraintTop_toBottomOf="@+id/tvEmail"
         tools:text="telephone" />
 
     <TextView
