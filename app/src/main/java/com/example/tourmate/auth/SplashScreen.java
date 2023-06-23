@@ -24,9 +24,14 @@ public class SplashScreen extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (splashCard.getId() == view.getId()){
-            Intent intent = new Intent(SplashScreen.this, Login.class);
-            startActivity(intent);
+        if (view.getId() == R.id.splashCard) {
+            splashCard.animate().alpha(0f).setDuration(1000).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(SplashScreen.this, Login.class));
+                    finish();
+                }
+            });
         }
     }
 }
