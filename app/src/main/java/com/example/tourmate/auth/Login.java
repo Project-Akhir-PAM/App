@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tourmate.R;
-import com.example.tourmate.home.HomeFragment;
 import com.example.tourmate.navbar.NavbarActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
